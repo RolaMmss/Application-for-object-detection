@@ -1,3 +1,5 @@
+# https://colab.research.google.com/drive/1i8yl9NxsgH9JlRCTzvVdA_Y2bJixI9n1#scrollTo=iiIlsue4YJrv
+
 # !pip install streamlit
 # !pip install ultralytics
 
@@ -35,7 +37,7 @@ def main():
             # st.image(img, caption='Predicted Image', use_column_width=True)
             
         
-            # Plot the results on the image
+            # # Plot the results on the image
             res_plotted = results[0].plot(labels=True)
             st.image(res_plotted, caption='Predicted Image', use_column_width=True)
             
