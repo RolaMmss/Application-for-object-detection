@@ -3,8 +3,7 @@
 
 import cv2
 import streamlit as st
-from PIL import Image
-# from google.colab.patches import cv2_imshow
+from PIL import Image, ImageDraw
 from ultralytics import YOLO
 import numpy as np
 
@@ -14,16 +13,9 @@ model.load("yolov8n.pt")
 # # Class labels for car makes
 # class_labels = ['Audi', 'BMW', 'Mercedes', 'MercedesBenz', 'Toyota', 'Volkswagen', 'toyota']
 
-# def predict_image(img):
-#     # Convert image to OpenCV format
-#     image = cv2.cvtColor(np.array(img), cv2.COLOR_RGB2BGR)
-    
-#     # Perform object detection using the YOLOv8 model
-#     results = model.predict(image, conf=0.25)
-    
 
 def main():
-    st.title("Car Mark")
+    st.title("Prédire la marque de voiture!")
     st.write("Upload an image or a video file to predict the car make.")
 
     # Add file uploader
@@ -34,19 +26,33 @@ def main():
             # Process uploaded image
             img = Image.open(file)
             st.image(img, caption='Uploaded Image', use_column_width=True)
-            # predict_image(img)
-            results = model.predict(img, conf=0.25)
-            res=results[0].plot()
-            # cv2_imshow(res)
-            st.image(res)
+            results= model(img)
+            # results = model.predict(img, conf=0.25)
+
+           # Display predicted labels on the image
+            # annotated_img = results.render()  # Render annotated image with bounding boxes and labels
+            # annotated_img = Image.fromarray(annotated_img)  # Convert the image array to PIL Image
+            # st.image(img, caption='Predicted Image', use_column_width=True)
+            
+        
+            # Plot the results on the image
+            res_plotted = results[0].plot(labels=True)
+            st.image(res_plotted, caption='Predicted Image', use_column_width=True)
+            
+            # Display the predicted image
+            # st.image(img, caption='Predicted Image', use_column_width=True)
+            # res=results[0].plot()
+            # st.image(res)
         elif file.type.startswith('video'):
             # Process uploaded video
             video = cv2.VideoCapture(file)
             st.video(file)
-            # predict_video(video)
-            results = model.predict(video, conf=0.25)
-            res=results[0].plot()
-            st.image(res)
+            results= model(video)
+            # Display predicted labels on the video frames
+            annotated_video = results.render()  # Render annotated video frames with bounding boxes and labels
+            st.video(annotated_video)
+            # res=results[0].plot()
+            # st.image(res)
 
 if __name__ == '__main__':
     main()
