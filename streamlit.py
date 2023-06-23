@@ -45,11 +45,9 @@ def main():
             st.video(file)
             results= model(video)
             # Display predicted labels on the video frames
-            annotated_video = results.render()  # Render annotated video frames with bounding boxes and labels
-            st.video(annotated_video)
-            # res=results[0].plot()
-            # st.image(res)
-
+            res_plotted = results[0].plot(labels=True)
+            st.video(res_plotted)
+        
 if __name__ == '__main__':
     main()
 
